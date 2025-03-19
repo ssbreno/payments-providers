@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="33" failures="1" errors="0" time="3.933">
+  <testsuite name="LoggingInterceptor" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="2.949" tests="6">
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="should be defined" time="0.006">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="should be not intercepted" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - OK status code" time="0.005">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - BAD_REQUEST status code" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - INTERNAL_SERVER_ERROR status code" time="0.018">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - GENERIC_ERROR status code" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="ErrorUtils" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="2.961" tests="9">
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error code" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error code from exception" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from exception" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request exception - exists" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request exception - two constraints" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request children exception" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get invalid parameter message from bad request exception" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get INTERNAL_SERVER_ERROR message from exception" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="System header validation service" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="3.345" tests="6">
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="should be defined" time="0.015">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="Http exception" time="0.007">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="bad request error" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="conflict exception" time="0.002">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="internal server error" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="too large error" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="ErrorResponseDto" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="3.355" tests="2">
+    <testcase classname="__tests__/common/filters/error-response.spec.ts" name="should be defined" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error-response.spec.ts" name="should be defined" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="PrismaModule" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="3.364" tests="3">
+    <testcase classname="__tests__/infraestructure/prisma/prisma.module.spec.ts" name="should be defined" time="0.035">
+    </testcase>
+    <testcase classname="__tests__/infraestructure/prisma/prisma.module.spec.ts" name="should provide PrismaService" time="0.004">
+    </testcase>
+    <testcase classname="__tests__/infraestructure/prisma/prisma.module.spec.ts" name="should export PrismaService" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="PrismaService" errors="0" failures="1" skipped="0" timestamp="2025-03-13T22:48:28" time="3.395" tests="4">
+    <testcase classname="__tests__/infraestructure/prisma/prisma.service.spec.ts" name="should be defined" time="0.033">
+    </testcase>
+    <testcase classname="__tests__/infraestructure/prisma/prisma.service.spec.ts" name="should connect to database" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/infraestructure/prisma/prisma.service.spec.ts" name="should disconnect from database" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/infraestructure/prisma/prisma.service.spec.ts" name="should clean all tables" time="0.022">
+      <failure>PrismaClientInitializationError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Can&apos;t reach database server at `localhost:5432`
+
+Please make sure your database server is running at `localhost:5432`.
+    at Un.handleRequestError (/Users/breno/Documents/Developers/nestjs-boilerplate/node_modules/@prisma/client/runtime/library.js:121:7748)
+    at Un.handleAndLogRequestError (/Users/breno/Documents/Developers/nestjs-boilerplate/node_modules/@prisma/client/runtime/library.js:121:6771)
+    at Un.request (/Users/breno/Documents/Developers/nestjs-boilerplate/node_modules/@prisma/client/runtime/library.js:121:6478)
+    at l (/Users/breno/Documents/Developers/nestjs-boilerplate/node_modules/@prisma/client/runtime/library.js:130:9644)
+    at Proxy.cleanDatabase (/Users/breno/Documents/Developers/nestjs-boilerplate/src/infraestructure/prisma/prisma.service.ts:37:7)
+    at Object.&lt;anonymous&gt; (/Users/breno/Documents/Developers/nestjs-boilerplate/__tests__/infraestructure/prisma/prisma.service.spec.ts:41:7)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="LoggingModule" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="3.468" tests="3">
+    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should be defined" time="0.015">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should provide WinstonLogger" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should export WinstonLogger" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
