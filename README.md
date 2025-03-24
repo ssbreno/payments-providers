@@ -2,7 +2,7 @@
 
 Este projeto implementa uma solução robusta de gateway de pagamentos para e-commerce, atuando como intermediário entre a aplicação e provedores de pagamento externos (simulados neste projeto através de serviços mock). O sistema utiliza uma arquitetura resiliente com circuit breakers para gerenciar falhas nos provedores.
 
-## 🚀 Características
+## Características
 
 - **Processamento de Pagamentos**: Recebe informações de pedidos e processa pagamentos com provedores externos
 - **Resiliência**: Alterna automaticamente entre provedores em caso de falha
@@ -13,7 +13,7 @@ Este projeto implementa uma solução robusta de gateway de pagamentos para e-co
 - **Consultas de Transações**: Obtenção de informações detalhadas sobre pagamentos
 - **Monitoramento**: Status em tempo real dos provedores e circuit breakers
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 O sistema utiliza uma arquitetura de microserviços combinando:
 
@@ -34,7 +34,7 @@ O sistema utiliza uma arquitetura de microserviços combinando:
 6. Eventos são publicados no Kafka durante todo o processo
 7. Os consumidores do Kafka monitoram e controlam o estado dos circuit breakers
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Backend**: NestJS + TypeScript
 - **ORM**: Prisma
@@ -46,14 +46,14 @@ O sistema utiliza uma arquitetura de microserviços combinando:
 - **Containerização**: Docker + Docker Compose
 - **Documentação API**: Swagger/OpenAPI
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 - Docker e Docker Compose
 - Node.js 18+ (para desenvolvimento local)
 - NPM ou Yarn
 - Git
 
-## 🔧 Configuração
+## Configuração
 
 ### Clonando o Repositório
 
@@ -129,7 +129,7 @@ Para configurar o banco de dados:
 docker-compose exec api npx prisma migrate dev
 ```
 
-## 🚀 Executando o Projeto
+## Executando o Projeto
 
 Após iniciar todos os serviços, você pode acessar:
 
@@ -137,7 +137,7 @@ Após iniciar todos os serviços, você pode acessar:
 - **Documentação Swagger**: http://localhost:3000/docs
 - **Kafka UI**: http://localhost:8080
 
-## 📡 Testando os Provedores e Webhooks
+## Testando os Provedores e Webhooks
 
 ### Verificar Saúde dos Provedores
 
@@ -165,7 +165,7 @@ curl -X POST http://localhost:3003/webhooks \
   -d '{"url":"http://api:3000/api/v1/payments/webhook"}'
 ```
 
-## 🔍 Endpoints Principais
+## Endpoints Principais
 
 ### API de Pagamentos
 
