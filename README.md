@@ -195,40 +195,5 @@ curl -X POST http://localhost:3000/api/v1/payments \
   }'
 ```
 
-flowchart TD
-subgraph "Aplicação de E-commerce"
-Client[Cliente]
-end
+![image](https://github.com/user-attachments/assets/bd19580b-b313-4399-b514-979afc6ff5e2)
 
-    subgraph "API Gateway de Pagamentos"
-        API[API NestJS] --> UseCases[Casos de Uso]
-        UseCases --> Repositories[Repositórios]
-        Repositories --> DB[(PostgreSQL)]
-        API --> CircuitBreaker[Circuit Breaker\nOpossum]
-        WebhookHandler[Webhook Handler] --> UseCases
-    end
-
-    subgraph "Mensageria"
-        Kafka[Apache Kafka] <--> CircuitControl[Circuit Control\nService]
-        Kafka <--> PaymentEvents[Payment Events\nService]
-        CircuitControl <--> CircuitBreaker
-    end
-
-    subgraph "Provedores de Pagamento"
-        Provider1[Provedor 1\nMock]
-        Provider2[Provedor 2\nMock]
-    end
-
-    Client --> API
-    CircuitBreaker --> Provider1
-    CircuitBreaker --> Provider2
-
-    %% Webhook connections
-    Provider1 -->|Webhook\nStatus Updates| WebhookHandler
-    Provider2 -->|Webhook\nStatus Updates| WebhookHandler
-
-    class Client,API,Kafka,Provider1,Provider2 emphasis
-    class CircuitBreaker,CircuitControl accent
-    class WebhookHandler,Provider1,Provider2 webhook
-
-    classDef webhook fill:#f96,stroke:#333,stroke-width:2px
