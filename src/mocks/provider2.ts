@@ -11,12 +11,12 @@ const webhooks = new Set<string>()
 
 app.use(express.json())
 
-app.use((req, res, next) => {
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.log(`Provider2 - ${req.method} ${req.url}`)
   next()
 })
 
-app.get('/health', (req, res) => {
+app.get('/health', (req: express.Request, res: express.Response) => {
   res.status(200).json({ status: 'ok', provider: 'provider2' })
 })
 
