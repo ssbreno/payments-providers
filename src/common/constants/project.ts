@@ -1,4 +1,14 @@
-/* istanbul ignore file */
+import { ConfigService } from '@nestjs/config'
+
+let configService: ConfigService
+
+export const setConfigService = (config: ConfigService) => {
+  configService = config
+}
+
+export const getProjectName = () => configService?.get('project.name') || ''
+export const getProjectDescription = () => configService?.get('project.description') || ''
+export const getProjectVersion = () => configService?.get('project.version') || ''
 
 export const PROJECT_NAME = process.env.npm_package_name || process.env.PROJECT_NAME || ''
 export const PROJECT_DESCRIPTION =

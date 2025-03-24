@@ -8,14 +8,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  name      String
-  password  String
-  active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+enum PaymentStatusEnum {
+  PENDING
+  AUTHORIZED
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+  VOIDED
+}
 
-  @@map("users")
+enum PaymentMethodEnum {
+  CARD
+}
+
+enum RefundStatusEnum {
+  PENDING
+  PROCESSED
+  FAILED
+}
+
+model Payment {
+  id            String           @id @default(uuid())
+  amount        Float
+  currency      String
+  description   String
+  status        PaymentStatusEnum
+  paymentMethod PaymentMethodEnum
+  providerName  String
+  providerId    String
+  cardId        String?
+  originalAmount Float?
+  currentAmount Float?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  refunds       Refund[]
+
+  @@index([providerName, providerId])
+  @@index([status])
+  
+  @@map("payments")
+}
+
+model Refund {
+  id           String         @id @default(uuid())
+  paymentId    String
+  payment      Payment        @relation(fields: [paymentId], references: [id])
+  amount       Float
+  status       RefundStatusEnum
+  providerName String
+  providerId   String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([paymentId])
+  @@index([providerName, providerId])
+  @@index([status])
+  
+  @@map("refunds")
 }

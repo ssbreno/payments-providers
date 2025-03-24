@@ -13,19 +13,16 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { useContainer } from 'class-validator'
 import { AppModule } from './app.module'
-import { PORT, PROJECT_DESCRIPTION, PROJECT_NAME, PROJECT_VERSION } from './common/constants'
 import { HttpExceptionFilter } from './common/filters/http-exception.filter'
 import { WinstonLogger } from './common/logging'
+import { PORT } from './common/constants/env'
+import { PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_VERSION } from './common/constants/project'
 
 const DEFAULT_API_PREFIX = '/api'
 const DEFAULT_API_VERSION = '1'
 const DEFAULT_SWAGGER_PREFIX = '/docs'
 const DEFAULT_BOOTSTRAP_LOG_LEVEL = 'debug'
 
-/**
- * Setup the Swagger (UI).
- * @param app
- */
 export const setupSwagger = (app: INestApplication) => {
   const options = new DocumentBuilder()
     .setTitle(PROJECT_NAME)
@@ -39,9 +36,6 @@ export const setupSwagger = (app: INestApplication) => {
   SwaggerModule.setup(path, app, document)
 }
 
-/**
- * Bootstrap the app.
- */
 export async function bootstrap() {
   const logger = new Logger('Bootstrap')
 

@@ -2,10 +2,11 @@ version: '3.8'
 
 services:
   api:
-    container_name: nestjs_api
+    container_name: payment_api
     build:
       context: .
       target: development
+      dockerfile: Dockerfile
     volumes:
       - .:/app
       - /app/node_modules
@@ -14,16 +15,41 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
+      kafka:
         condition: service_healthy
-    environment:
-      - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/nestjs_db
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      provider1:
+        condition: service_started
+      provider2:
+        condition: service_started
     networks:
       - app-network
     command: npm run start:dev
+
+  provider1:
+    container_name: payment_provider1
+    build:
+      context: .
+      dockerfile: Dockerfile.mocks
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+    networks:
+      - app-network
+    command: npm run start:provider1
+
+  provider2:
+    container_name: payment_provider2
+    build:
+      context: .
+      dockerfile: Dockerfile.mocks
+    ports:
+      - "3003:3002"
+    environment:
+      - PORT=3002
+    networks:
+      - app-network
+    command: npm run start:provider2
 
   postgres:
     container_name: postgres
@@ -33,7 +59,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=nestjs_db
+      - POSTGRES_DB=payments_providers
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-scripts:/docker-entrypoint-initdb.d
@@ -45,54 +71,71 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:
-    container_name: redis
-    image: redis:7-alpine
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
     ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
       interval: 10s
       timeout: 5s
       retries: 5
-    command: redis-server --appendonly yes
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_logs:/var/lib/zookeeper/log
 
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-      - PGADMIN_CONFIG_SERVER_MODE=False
-    ports:
-      - "5050:80"
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:latest
     depends_on:
-      - postgres
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - kafka_data:/var/lib/kafka/data
 
-  redis-commander:
-    container_name: redis-commander
-    image: rediscommander/redis-commander:latest
-    environment:
-      - REDIS_HOSTS=local:redis:6379
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
     ports:
-      - "8081:8081"
+      - "8080:8080"
     depends_on:
-      - redis
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
     networks:
       - app-network
 
 volumes:
   postgres_data:
-  redis_data:
-  pgadmin_data:
+  kafka_data:
+  zookeeper_data:
+  zookeeper_logs:
 
 networks:
   app-network:

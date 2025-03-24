@@ -1,6 +1,7 @@
 import { LoggerService } from '@nestjs/common'
 import * as winston from 'winston'
-import { nestConsoleFormat, severity } from './winston.formats'
+
+import { severity } from './winston.formats'
 
 export interface LoggerOptions {
   level?: string
@@ -25,29 +26,19 @@ export class WinstonLogger implements LoggerService {
           winston.format.timestamp(),
           winston.format.ms(),
           severity({ upperCase: true }),
-          nestConsoleFormat(),
         ),
       transports: options?.transports || [new winston.transports.Console()],
     })
   }
 
-  /**
-   * Set the context for the logger
-   */
   public setContext(context: string): void {
     this.context = context
   }
 
-  /**
-   * Log an info message
-   */
   public log(message: any, context?: string): void {
     this.callLoggerMethod('info', message, context)
   }
 
-  /**
-   * Log an error message
-   */
   public error(message: any, trace?: string, context?: string): void {
     const meta: Record<string, any> = {}
     let actualMessage: string
@@ -71,30 +62,18 @@ export class WinstonLogger implements LoggerService {
     })
   }
 
-  /**
-   * Log a warning message
-   */
   public warn(message: any, context?: string): void {
     this.callLoggerMethod('warn', message, context)
   }
 
-  /**
-   * Log a debug message
-   */
   public debug(message: any, context?: string): void {
     this.callLoggerMethod('debug', message, context)
   }
 
-  /**
-   * Log a verbose message
-   */
   public verbose(message: any, context?: string): void {
     this.callLoggerMethod('verbose', message, context)
   }
 
-  /**
-   * Call the appropriate logger method with type safety
-   */
   private callLoggerMethod(
     methodName: 'info' | 'warn' | 'debug' | 'verbose',
     message: any,

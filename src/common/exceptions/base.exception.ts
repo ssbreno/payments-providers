@@ -3,7 +3,7 @@ export class BaseException extends Error {
     public readonly message: string,
     public readonly statusCode: number = 500,
     public readonly errorCode?: string,
-    public readonly metadata?: Record<string, any>,
+    public readonly metadata?: Record<string, unknown>,
   ) {
     super(message)
     this.name = this.constructor.name

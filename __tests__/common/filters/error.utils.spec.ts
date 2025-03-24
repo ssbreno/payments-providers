@@ -3,8 +3,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import { getErrorCode, getErrorMessage } from '@src/common/filters/error.utils'
 import { ValidationError } from 'class-validator'
-import { getErrorCode, getErrorMessage } from '../../../src/common/filters/error.utils'
 
 describe('ErrorUtils', () => {
   it('should get error code', () => {
@@ -90,7 +90,7 @@ describe('ErrorUtils', () => {
     const exception = new BadRequestException({
       message: [validatorError],
     })
-    expect(getErrorMessage(exception.getResponse())).toBe('email not be null')
+    expect(getErrorMessage(exception.getResponse())).toBe('email not be empty')
   })
 
   it('should get invalid parameter message from bad request exception', () => {

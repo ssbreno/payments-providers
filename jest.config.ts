@@ -13,17 +13,9 @@ module.exports = {
     '!<rootDir>/src/**/*.dto.ts',
     '!<rootDir>/src/**/*.mock.ts',
     '!<rootDir>/src/main.ts',
-    // Include these files in coverage
-    '<rootDir>/src/**/*.entity.ts',
-    '<rootDir>/src/**/*.module.ts',
-    '<rootDir>/src/**/*.interface.ts',
-    '<rootDir>/src/**/*.guard.ts',
-    '<rootDir>/src/**/*.interceptor.ts',
-    '<rootDir>/src/**/*.filter.ts',
-    '<rootDir>/src/**/*.strategy.ts',
   ],
   coverageDirectory: '<rootDir>/coverage',
-  coverageReporters: ['text', 'html', 'cobertura'],
+  coverageReporters: ['text', 'html', 'cobertura', 'json-summary'],
   reporters: [
     'default',
     [

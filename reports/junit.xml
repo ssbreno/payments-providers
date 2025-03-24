@@ -1,96 +1,287 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="33" failures="1" errors="0" time="3.933">
-  <testsuite name="LoggingInterceptor" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="2.949" tests="6">
-    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="should be defined" time="0.006">
+<testsuites name="jest tests" tests="126" failures="0" errors="0" time="4.64">
+  <testsuite name="WinstonLogger" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.064" tests="18">
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should create a logger with default options" time="0.005">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should create a logger with custom options" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should update the context" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should call info for log method" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should call warn for warn method" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should call debug for debug method" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should call verbose for verbose method" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle object messages with message property" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle object messages without message property" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should use provided context instead of default" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle string error messages" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle Error objects" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle Error objects with custom trace" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle object error messages with message property" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle object error messages with message property and trace" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle object error messages without message property" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should use provided context instead of default" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.logger.spec.ts" name="should handle string error with trace" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="BaseException" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.466" tests="4">
+    <testcase classname="__tests__/common/exceptions/base.exception.spec.ts" name="should create an instance with only message" time="0.009">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/base.exception.spec.ts" name="should create an instance with custom status code" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/base.exception.spec.ts" name="should create an instance with error code" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/base.exception.spec.ts" name="should create an instance with metadata" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="UnauthorizedException" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.495" tests="3">
+    <testcase classname="__tests__/common/exceptions/unauthorized.exception.spec.ts" name="should create an instance with default message" time="0.014">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/unauthorized.exception.spec.ts" name="should create an instance with custom message" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/unauthorized.exception.spec.ts" name="should create an instance with metadata" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Environment Constants" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:37" time="0.077" tests="13">
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should use default value when LOG_LEVEL is not set" time="0.002">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should use environment value when LOG_LEVEL is set" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should be false when NODE_ENV is not production" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should be true when NODE_ENV is production" time="0.004">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should use default value when PORT is not set" time="0.005">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should use environment value when PORT is set" time="0.002">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should set the config service instance" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should get log level from config service when available" time="0.006">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should fall back to process.env when config service not set" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should check production status from config service when available" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should fall back to process.env when config service not set" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should get port from config service when available" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/env.spec.ts" name="should fall back to process.env when config service not set" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="DomainException" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:37" time="0.043" tests="2">
+    <testcase classname="__tests__/common/exceptions/domain.exception.spec.ts" name="should create an instance with only message" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/domain.exception.spec.ts" name="should create an instance with metadata" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Project Constants" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.559" tests="16">
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use npm package name when available" time="0.009">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use PROJECT_NAME env when npm_package_name is not available" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use empty string when neither npm_package_name nor PROJECT_NAME are available" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use npm package description when available" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use PROJECT_DESCRIPTION env when npm_package_description is not available" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use empty string when neither npm_package_description nor PROJECT_DESCRIPTION are available" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use npm package version when available" time="0.004">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use PROJECT_VERSION env when npm_package_version is not available" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should use empty string when neither npm_package_version nor PROJECT_VERSION are available" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should set the config service instance" time="0.002">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should get project name from config service when available" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should return empty string when config service is not set" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should get project description from config service when available" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should return empty string when config service is not set" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should get project version from config service when available" time="0.002">
+    </testcase>
+    <testcase classname="__tests__/common/constants/project.spec.ts" name="should return empty string when config service is not set" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="BusinessException" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.568" tests="3">
+    <testcase classname="__tests__/common/exceptions/business.exception.spec.ts" name="should create an instance with only message" time="0.01">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/business.exception.spec.ts" name="should create an instance with custom error code" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/business.exception.spec.ts" name="should create an instance with metadata" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Entity" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:37" time="0.027" tests="2">
+    <testcase classname="__tests__/common/domain/entity.spec.ts" name="should allow setting an id" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/domain/entity.spec.ts" name="should allow setting dates" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Winston Formats" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.623" tests="33">
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should identify objects correctly" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should identify functions correctly" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should reject primitive values" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should add severity field based on log level" time="0.013">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should default to INFO severity when level is not recognized" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should use custom levels if provided" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should add severity field in uppercase when upperCase option is true" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should add severity field in lowercase when upperCase option is false" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should use default empty options if none provided" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle all possible log level codes with custom levels" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle undefined level code" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with string message" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with object message" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with context" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with timestamp" time="0.004">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with ms" time="0.004">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with additional metadata" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle complex nested objects with multiple levels" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle different context types correctly" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with custom app name" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with error level" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle object messages properly" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle null message" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle undefined message" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle message with unexpected types" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with warn level" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with debug level" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should format log with verbose level" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle unknown log levels" time="0.005">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle undefined message" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle null message" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle boolean message" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/logging/winston.formats.spec.ts" name="should handle number message" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="NotFoundException" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.625" tests="2">
+    <testcase classname="__tests__/common/exceptions/not-found.exception.spec.ts" name="should create an instance with resource name" time="0.006">
+    </testcase>
+    <testcase classname="__tests__/common/exceptions/not-found.exception.spec.ts" name="should create an instance with metadata" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="LoggingInterceptor" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.635" tests="6">
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="should be defined" time="0.002">
     </testcase>
     <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="should be not intercepted" time="0.001">
     </testcase>
-    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - OK status code" time="0.005">
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - OK status code" time="0.003">
     </testcase>
-    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - BAD_REQUEST status code" time="0.001">
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - BAD_REQUEST status code" time="0.003">
     </testcase>
-    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - INTERNAL_SERVER_ERROR status code" time="0.018">
+    <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - INTERNAL_SERVER_ERROR status code" time="0.017">
     </testcase>
     <testcase classname="__tests__/common/logging/logging.interceptor.spec.ts" name="logs the input and output request details - GENERIC_ERROR status code" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="ErrorUtils" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="2.961" tests="9">
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error code" time="0.003">
-    </testcase>
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error code from exception" time="0.001">
-    </testcase>
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message" time="0">
-    </testcase>
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from exception" time="0">
-    </testcase>
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request exception - exists" time="0.001">
-    </testcase>
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request exception - two constraints" time="0">
-    </testcase>
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request children exception" time="0">
-    </testcase>
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get invalid parameter message from bad request exception" time="0.001">
-    </testcase>
-    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get INTERNAL_SERVER_ERROR message from exception" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="System header validation service" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="3.345" tests="6">
-    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="should be defined" time="0.015">
-    </testcase>
-    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="Http exception" time="0.007">
-    </testcase>
-    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="bad request error" time="0.001">
-    </testcase>
-    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="conflict exception" time="0.002">
-    </testcase>
-    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="internal server error" time="0.001">
-    </testcase>
-    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="too large error" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="ErrorResponseDto" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="3.355" tests="2">
-    <testcase classname="__tests__/common/filters/error-response.spec.ts" name="should be defined" time="0.003">
+  <testsuite name="ErrorResponseDto" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:36" time="0.601" tests="2">
+    <testcase classname="__tests__/common/filters/error-response.spec.ts" name="should be defined" time="0">
     </testcase>
     <testcase classname="__tests__/common/filters/error-response.spec.ts" name="should be defined" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="PrismaModule" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="3.364" tests="3">
-    <testcase classname="__tests__/infraestructure/prisma/prisma.module.spec.ts" name="should be defined" time="0.035">
+  <testsuite name="ErrorUtils" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.729" tests="9">
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error code" time="0.003">
     </testcase>
-    <testcase classname="__tests__/infraestructure/prisma/prisma.module.spec.ts" name="should provide PrismaService" time="0.004">
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error code from exception" time="0">
     </testcase>
-    <testcase classname="__tests__/infraestructure/prisma/prisma.module.spec.ts" name="should export PrismaService" time="0.002">
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message" time="0">
     </testcase>
-  </testsuite>
-  <testsuite name="PrismaService" errors="0" failures="1" skipped="0" timestamp="2025-03-13T22:48:28" time="3.395" tests="4">
-    <testcase classname="__tests__/infraestructure/prisma/prisma.service.spec.ts" name="should be defined" time="0.033">
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from exception" time="0.001">
     </testcase>
-    <testcase classname="__tests__/infraestructure/prisma/prisma.service.spec.ts" name="should connect to database" time="0.003">
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request exception - exists" time="0">
     </testcase>
-    <testcase classname="__tests__/infraestructure/prisma/prisma.service.spec.ts" name="should disconnect from database" time="0.001">
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request exception - two constraints" time="0.001">
     </testcase>
-    <testcase classname="__tests__/infraestructure/prisma/prisma.service.spec.ts" name="should clean all tables" time="0.022">
-      <failure>PrismaClientInitializationError: 
-Invalid `prisma.$executeRawUnsafe()` invocation:
-
-
-Can&apos;t reach database server at `localhost:5432`
-
-Please make sure your database server is running at `localhost:5432`.
-    at Un.handleRequestError (/Users/breno/Documents/Developers/nestjs-boilerplate/node_modules/@prisma/client/runtime/library.js:121:7748)
-    at Un.handleAndLogRequestError (/Users/breno/Documents/Developers/nestjs-boilerplate/node_modules/@prisma/client/runtime/library.js:121:6771)
-    at Un.request (/Users/breno/Documents/Developers/nestjs-boilerplate/node_modules/@prisma/client/runtime/library.js:121:6478)
-    at l (/Users/breno/Documents/Developers/nestjs-boilerplate/node_modules/@prisma/client/runtime/library.js:130:9644)
-    at Proxy.cleanDatabase (/Users/breno/Documents/Developers/nestjs-boilerplate/src/infraestructure/prisma/prisma.service.ts:37:7)
-    at Object.&lt;anonymous&gt; (/Users/breno/Documents/Developers/nestjs-boilerplate/__tests__/infraestructure/prisma/prisma.service.spec.ts:41:7)</failure>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get error message from bad request children exception" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get invalid parameter message from bad request exception" time="0">
+    </testcase>
+    <testcase classname="__tests__/common/filters/error.utils.spec.ts" name="should get INTERNAL_SERVER_ERROR message from exception" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="LoggingModule" errors="0" failures="0" skipped="0" timestamp="2025-03-13T22:48:28" time="3.468" tests="3">
-    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should be defined" time="0.015">
+  <testsuite name="CustomThrottlerGuard" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.761" tests="3">
+    <testcase classname="__tests__/common/guards/throttler.guard.spec.ts" name="should return x-forwarded-for header when present" time="0.002">
     </testcase>
-    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should provide WinstonLogger" time="0.003">
+    <testcase classname="__tests__/common/guards/throttler.guard.spec.ts" name="should return IP when x-forwarded-for header is not present" time="0">
     </testcase>
-    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should export WinstonLogger" time="0.001">
+    <testcase classname="__tests__/common/guards/throttler.guard.spec.ts" name="should handle multiple IPs in x-forwarded-for header" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="LoggingModule" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:33" time="3.885" tests="4">
+    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should provide WinstonLogger" time="0.017">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should use default log level when LOG_LEVEL is not set" time="0.012">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should use environment log level when LOG_LEVEL is set" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/logging/logging.module.spec.ts" name="should enable silent mode when LOG_SILENT is set to 1" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="System header validation service" errors="0" failures="0" skipped="0" timestamp="2025-03-23T00:31:37" time="0.849" tests="6">
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="should be defined" time="0.004">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="Http exception" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="bad request error" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="conflict exception" time="0.003">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="internal server error" time="0.001">
+    </testcase>
+    <testcase classname="__tests__/common/filters/http-exception.filter.spec.ts" name="too large error" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

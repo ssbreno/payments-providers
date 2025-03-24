@@ -2,17 +2,14 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
 import { ThrottlerModule, ThrottlerModuleOptions } from '@nestjs/throttler'
-import { CacheModule } from '@nestjs/cache-manager'
-
 import { LoggingInterceptor } from './common/logging/logging.interceptor'
 import { HttpExceptionFilter } from './common/filters/http-exception.filter'
 import { CustomThrottlerGuard } from './common/guards/throttler.guard'
 import { LoggingModule } from './common/logging'
 import { PrismaModule } from './infraestructure/prisma/prisma.module'
-import { AuthModule } from './modules/auth/auth.module'
-import { UsersModule } from './modules/users/users.module'
-import { QueueModule } from './modules/queue/queue.module'
-import { redisConfig } from './config/redis.config'
+import { PaymentsModule } from './modules/payments/payments.module'
+import { KafkaModule } from './modules/kafka/kafka.module'
+import { CircuitBreakerModule } from './modules/circuit-breaker/circuit-breaker.module'
 
 @Module({
   imports: [
@@ -31,16 +28,11 @@ import { redisConfig } from './config/redis.config'
         ],
       }),
     }),
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useFactory: redisConfig,
-      inject: [ConfigService],
-    }),
     LoggingModule,
     PrismaModule,
-    AuthModule,
-    UsersModule,
-    QueueModule,
+    CircuitBreakerModule,
+    KafkaModule,
+    PaymentsModule,
   ],
   providers: [
     {

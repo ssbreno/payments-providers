@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-base-to-string */
 import { Module, Global } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import * as winston from 'winston'
+
 import { WinstonLogger, LoggerOptions } from './winston.logger'
 
 @Global()
@@ -23,13 +23,21 @@ import { WinstonLogger, LoggerOptions } from './winston.logger'
               ? winston.format.json()
               : winston.format.combine(
                   winston.format.colorize(),
-                  winston.format.printf(({ timestamp, level, message, context, ...meta }) => {
-                    const ctx = context || '-'
-                    const metaStr = Object.keys(meta).length
-                      ? '\n' + JSON.stringify(meta, null, 2)
-                      : ''
-                    return `${timestamp} [${level}] [${ctx}] ${message}${metaStr}`
-                  }),
+                  winston.format.printf(
+                    ({
+                      timestamp,
+                      level,
+                      message,
+                      context,
+                      ...meta
+                    }: winston.Logform.TransformableInfo) => {
+                      const ctx = (context as string | undefined) || '-'
+                      const metaStr = Object.keys(meta).length
+                        ? '\n' + JSON.stringify(meta, null, 2)
+                        : ''
+                      return `${String(timestamp)} [${String(level)}] [${ctx}] ${String(message)}${metaStr}`
+                    },
+                  ),
                 ),
           ),
         }

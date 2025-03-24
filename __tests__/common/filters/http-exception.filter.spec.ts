@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
-import { HttpExceptionFilter } from '../../../src/common/filters/http-exception.filter'
+import { HttpExceptionFilter } from '@src/common/filters/http-exception.filter'
 
 const mockLogger = {
   info: jest.fn(),
@@ -129,7 +129,7 @@ describe('System header validation service', () => {
     })
 
     it('too large error', () => {
-      const error = { type: 'entity.too.large', length: 2048, limit: 1024 }
+      const error = { type: 'entity.too.large', length: 2048, limit: 1024 } as any
 
       filter.catch(error, mockArgumentsHost)
       expect(mockStatus).toBeCalledWith(HttpStatus.PAYLOAD_TOO_LARGE)

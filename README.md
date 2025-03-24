@@ -1,199 +1,161 @@
-# NestJS Boilerplate
+# Sistema de Gateway de Pagamentos
 
-A production-ready NestJS boilerplate with SQL Server, Redis, Docker, and comprehensive security features.
+Este projeto implementa uma solução robusta de gateway de pagamentos para e-commerce, atuando como intermediário entre a aplicação e provedores de pagamento externos como Stripe e Braintree (simulados neste projeto).
 
-## Features
+## 🚀 Características
 
-### Core Features
+- **Processamento de Pagamentos**: Recebe informações de pedidos e processa pagamentos com provedores externos
+- **Resiliência**: Alterna automaticamente entre provedores em caso de falha
+- **Circuit Breaker**: Utiliza Opossum para detectar falhas e evitar cascata de erros
+- **Mensageria**: Integração com Kafka para comunicação assíncrona e recuperação de falhas
+- **Estorno de Pagamentos**: Suporte para estorno total ou parcial
+- **Consultas de Transações**: Obtenção de informações detalhadas sobre pagamentos
+- **Monitoramento**: Status em tempo real dos provedores e circuit breakers
 
-- 🚀 NestJS framework with TypeScript
-- 🛡️ SQL Server database integration
-- 📝 Prisma ORM for type-safe database access
-- 🔄 Redis for caching and session management
-- 🐳 Docker and Docker Compose setup
-- 🔒 Advanced security features
+## 🏗️ Arquitetura
 
-### Development Features
+O sistema utiliza uma arquitetura de microserviços combinando:
 
-- 📦 ESLint and Prettier for code quality
-- 🧪 Jest for testing
-- 🔄 Hot reload for development
-- 📝 Swagger API documentation
-- 🪝 Git hooks with Husky
-- 🔍 TypeScript path aliases
+- **Clean Architecture**: Separação clara entre domínio, aplicação e infraestrutura
+- **Circuit Breaker Pattern**: Gerencia falhas dos provedores de pagamento
+- **Event-Driven Architecture**: Usa Kafka para comunicação assíncrona
+- **Padrão Repository**: Abstração para acesso a dados
+- **Dependency Injection**: Inversão de controle para melhor testabilidade
 
-### Security Features
+### Fluxo de Processamento de Pagamentos
 
-- 🔒 Helmet security middleware
-- 🛡️ CORS protection
-- 🚧 Rate limiting
-- 🔐 CSRF protection
-- 📝 Request validation
-- 🔍 Security headers
+1. A API recebe uma requisição de pagamento
+2. O sistema verifica os provedores disponíveis
+3. O processamento é tentado no provedor primário
+4. Em caso de falha, o sistema alterna automaticamente para o provedor de backup
+5. Eventos são publicados no Kafka durante todo o processo
+6. Os consumidores do Kafka controlam o estado dos circuit breakers
 
-### Additional Features
+## 🛠️ Tecnologias Utilizadas
 
-- 🎯 Exception handling system
-- 📝 Request logging
-- 🏥 Health checks
-- 🔄 Database migrations
-- 🧪 Testing utilities
-- 📊 Performance monitoring
+- **Backend**: NestJS + TypeScript
+- **ORM**: Prisma
+- **Banco de Dados**: PostgreSQL
+- **Mensageria**: Kafka + KafkaJS
+- **Circuit Breaker**: Opossum
+- **Containerização**: Docker + Docker Compose
+- **Documentação API**: Swagger/OpenAPI
 
-## Prerequisites
+## 📋 Pré-requisitos
 
-- Node.js (v18+ recommended)
-- Docker and Docker Compose
+- Docker e Docker Compose
+- Node.js 18+ (para desenvolvimento local)
+- NPM ou Yarn
 - Git
 
-## Getting Started
+## 🔧 Configuração
 
-### Installation
+### Variáveis de Ambiente
 
-1. Clone the repository:
-
-```bash
-git clone https://github.com/yourusername/nestjs-boilerplate.git
-cd nestjs-boilerplate
-```
-
-2. Install dependencies:
+Clone o repositório e configure as variáveis de ambiente:
 
 ```bash
-npm install
-```
-
-3. Set up environment variables:
-
-```bash
+git clone https://github.com/seu-usuario/payment-gateway.git
+cd payment-gateway
 cp .env.example .env
 ```
 
-4. Start the development environment:
+Edite o arquivo `.env` conforme necessário:
+
+```
+# API configuration
+PORT=3000
+API_PREFIX="/api/v1"
+API_VERSION="1"
+HOST="0.0.0.0"
+
+# Environment
+NODE_ENV=development
+
+# Database
+DATABASE_URL=postgresql://postgres:postgres@postgres:5432/nestjs_db
+
+# Kafka
+KAFKA_BROKERS=kafka:9092
+
+# Provedores de Pagamento
+PROVIDER1_BASE_URL=http://provider1:3001
+PROVIDER2_BASE_URL=http://provider2:3002
+```
+
+### Iniciando com Docker
+
+Para iniciar todos os serviços:
 
 ```bash
+# Construir as imagens
+docker-compose build
+
+# Iniciar os contêineres
 docker-compose up -d
 ```
 
-### Development
+Isso iniciará:
 
-Start the development server:
+- API de Pagamentos na porta 3000
+- PostgreSQL na porta 5432
+- Kafka na porta 9092
+- Zookeeper na porta 2181
+- Kafka UI na porta 8080
+- Provedor 1 (mock) na porta 3001
+- Provedor 2 (mock) na porta 3002
 
-```bash
-npm run start:dev
-```
+### Migrações do Banco de Dados
 
-Run tests:
-
-```bash
-npm run test        # Unit tests
-npm run test:e2e    # E2E tests
-npm run test:cov    # Test coverage
-```
-
-### Database Migrations
-
-Generate a migration:
+Para configurar o banco de dados:
 
 ```bash
-npx prisma migrate dev --name migration_name
+# Executar dentro do contêiner da API
+docker-compose exec api npx prisma migrate dev
 ```
 
-Apply migrations:
+## 🚀 Executando o Projeto
 
-```bash
-npx prisma migrate deploy
-```
+Após iniciar todos os serviços, você pode acessar:
 
-## Project Structure
+- **API de Pagamentos**: http://localhost:3000/api/v1
+- **Documentação Swagger**: http://localhost:3000/docs
+- **Kafka UI**: http://localhost:8080
 
-```
-├── src/
-│   ├── common/          # Common utilities, filters, guards
-│   ├── config/          # Configuration modules
-│   ├── modules/         # Feature modules
-│   ├── prisma/         # Prisma configuration and client
-│   └── main.ts         # Application entry point
-├── test/               # Test files
-├── docker/             # Docker configuration files
-├── prisma/             # Prisma schema and migrations
-└── docs/              # Documentation
-```
+flowchart TD
+subgraph "Aplicação de E-commerce"
+Client[Cliente]
+end
 
-## Configuration
+    subgraph "API Gateway de Pagamentos"
+        API[API NestJS] --> UseCases[Casos de Uso]
+        UseCases --> Repositories[Repositórios]
+        Repositories --> DB[(PostgreSQL)]
+        API --> CircuitBreaker[Circuit Breaker\nOpossum]
+        WebhookHandler[Webhook Handler] --> UseCases
+    end
 
-The application can be configured using environment variables. Check `.env.example` for all available options.
+    subgraph "Mensageria"
+        Kafka[Apache Kafka] <--> CircuitControl[Circuit Control\nService]
+        Kafka <--> PaymentEvents[Payment Events\nService]
+        CircuitControl <--> CircuitBreaker
+    end
 
-### Key Configuration Files
+    subgraph "Provedores de Pagamento"
+        Provider1[Provedor 1\nMock]
+        Provider2[Provedor 2\nMock]
+    end
 
-- `docker-compose.yml` - Docker services configuration
-- `.env` - Environment variables
-- `prisma/schema.prisma` - Database schema
-- `src/config/*` - Module configurations
+    Client --> API
+    CircuitBreaker --> Provider1
+    CircuitBreaker --> Provider2
 
-## API Documentation
+    %% Webhook connections
+    Provider1 -->|Webhook\nStatus Updates| WebhookHandler
+    Provider2 -->|Webhook\nStatus Updates| WebhookHandler
 
-Swagger documentation is available at `/docs` when running the application.
+    class Client,API,Kafka,Provider1,Provider2 emphasis
+    class CircuitBreaker,CircuitControl accent
+    class WebhookHandler,Provider1,Provider2 webhook
 
-## Testing
-
-### Unit Tests
-
-```bash
-npm run test
-```
-
-### E2E Tests
-
-```bash
-npm run test:e2e
-```
-
-### Test Coverage
-
-```bash
-npm run test:cov
-```
-
-## Security
-
-This boilerplate includes several security features:
-
-- Helmet for secure headers
-- CORS protection
-- Rate limiting
-- CSRF protection
-- Request validation
-- SQL injection protection
-- XSS protection
-
-## Performance
-
-Performance optimizations include:
-
-- Response compression
-- Redis caching
-- Database query optimization
-- Connection pooling
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the GNU License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- NestJS Team
-- Contributors and maintainers
-- Open source community
-
-## Support
-
-For support, please raise an issue in the GitHub repository or contact the maintainers.
+    classDef webhook fill:#f96,stroke:#333,stroke-width:2px

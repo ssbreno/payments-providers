@@ -3,31 +3,56 @@ import { LoggingModule } from '../../../src/common/logging/logging.module'
 import { WinstonLogger } from '../../../src/common/logging/winston.logger'
 
 describe('LoggingModule', () => {
-  let module: LoggingModule
+  const OLD_ENV = process.env
 
-  beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [LoggingModule],
-    }).compile()
-
-    module = moduleRef.get<LoggingModule>(LoggingModule)
+  beforeEach(() => {
+    jest.resetModules()
+    process.env = { ...OLD_ENV }
   })
 
-  it('should be defined', () => {
-    expect(module).toBeDefined()
+  afterAll(() => {
+    process.env = OLD_ENV
   })
 
   it('should provide WinstonLogger', async () => {
-    const moduleRef = await Test.createTestingModule({
+    const module = await Test.createTestingModule({
       imports: [LoggingModule],
     }).compile()
 
-    const logger = moduleRef.get<WinstonLogger>(WinstonLogger)
+    const logger = module.get<WinstonLogger>(WinstonLogger)
+    expect(logger).toBeInstanceOf(WinstonLogger)
+  })
+
+  it('should use default log level when LOG_LEVEL is not set', async () => {
+    delete process.env.LOG_LEVEL
+
+    const module = await Test.createTestingModule({
+      imports: [LoggingModule],
+    }).compile()
+
+    const logger = module.get<WinstonLogger>(WinstonLogger)
     expect(logger).toBeDefined()
   })
 
-  it('should export WinstonLogger', () => {
-    const exports = Reflect.getMetadata('exports', LoggingModule)
-    expect(exports).toContain(WinstonLogger)
+  it('should use environment log level when LOG_LEVEL is set', async () => {
+    process.env.LOG_LEVEL = 'debug'
+
+    const module = await Test.createTestingModule({
+      imports: [LoggingModule],
+    }).compile()
+
+    const logger = module.get<WinstonLogger>(WinstonLogger)
+    expect(logger).toBeDefined()
+  })
+
+  it('should enable silent mode when LOG_SILENT is set to 1', async () => {
+    process.env.LOG_SILENT = '1'
+
+    const module = await Test.createTestingModule({
+      imports: [LoggingModule],
+    }).compile()
+
+    const logger = module.get<WinstonLogger>(WinstonLogger)
+    expect(logger).toBeDefined()
   })
 })

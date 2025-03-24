@@ -1,7 +1,7 @@
 import { BadRequestException, InternalServerErrorException, Logger } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
+import { LoggingInterceptor } from '@src/common/logging/logging.interceptor'
 import { of, throwError } from 'rxjs'
-import { LoggingInterceptor } from '../../../src/common/logging/logging.interceptor'
 
 jest.mock('@nestjs/core', () => ({
   Reflector: jest.fn().mockImplementation(() => {

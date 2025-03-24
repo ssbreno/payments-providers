@@ -30,7 +30,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async cleanDatabase(): Promise<void> {
-    // Add the models you want to clean in the correct order (respecting foreign key constraints)
     const models = ['User', 'Worker']
 
     for (const model of models) {

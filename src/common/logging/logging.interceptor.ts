@@ -2,7 +2,6 @@ import {
   CallHandler,
   ExecutionContext,
   HttpException,
-  HttpStatus,
   Injectable,
   Logger,
   NestInterceptor,
@@ -11,11 +10,9 @@ import { Reflector } from '@nestjs/core'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
+
 import { IGNORE_LOGGING_INTERCEPTOR } from './logging.constants'
 
-/**
- * Interceptor that logs input/output requests
- */
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   private readonly ctxPrefix = LoggingInterceptor.name
@@ -23,11 +20,6 @@ export class LoggingInterceptor implements NestInterceptor {
 
   constructor(private readonly reflector: Reflector) {}
 
-  /**
-   * Intercept method, logs before and after the request being processed
-   * @param context details about the current request
-   * @param call$ implements the handle method that returns an Observable
-   */
   public intercept(context: ExecutionContext, call$: CallHandler): Observable<unknown> {
     const ignore = this.reflector.get<boolean>(IGNORE_LOGGING_INTERCEPTOR, context.getHandler())
 
@@ -62,11 +54,6 @@ export class LoggingInterceptor implements NestInterceptor {
     )
   }
 
-  /**
-   * Logs the request response in success cases
-   * @param body body returned
-   * @param context details about the current request
-   */
   private logNext(body: unknown, context: ExecutionContext): void {
     const req = context.switchToHttp().getRequest<FastifyRequest>()
     const res = context.switchToHttp().getResponse<FastifyReply>()
@@ -84,11 +71,6 @@ export class LoggingInterceptor implements NestInterceptor {
     )
   }
 
-  /**
-   * Logs the request response in success cases
-   * @param error Error object
-   * @param context details about the current request
-   */
   private logError(error: Error, context: ExecutionContext): void {
     const req = context.switchToHttp().getRequest<FastifyRequest>()
     const { method, url, body } = req
@@ -98,7 +80,7 @@ export class LoggingInterceptor implements NestInterceptor {
       const ctx = `${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`
       const message = `Outgoing response - ${statusCode} - ${method} - ${url}`
 
-      if (statusCode >= HttpStatus.INTERNAL_SERVER_ERROR) {
+      if (statusCode >= 500) {
         this.logger.error(
           {
             method,
