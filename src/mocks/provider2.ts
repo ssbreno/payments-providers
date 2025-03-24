@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 
 const app = express()
-const port = process.env.PORT || 3002
+const port = process.env.PORT || 3003
 
 const payments = new Map<string, any>()
 
@@ -20,7 +20,7 @@ app.get('/health', (req: express.Request, res: express.Response) => {
   res.status(200).json({ status: 'ok', provider: 'provider2' })
 })
 
-app.post('/webhooks', (req, res) => {
+app.post('/webhooks', (req: express.Request, res: express.Response) => {
   const { url } = req.body
 
   if (!url) {
@@ -32,11 +32,11 @@ app.post('/webhooks', (req, res) => {
   res.status(201).json({ success: true, message: 'Webhook registered successfully' })
 })
 
-app.get('/webhooks', (req, res) => {
+app.get('/webhooks', (req: express.Request, res: express.Response) => {
   res.status(200).json({ webhooks: Array.from(webhooks) })
 })
 
-app.delete('/webhooks', (req, res) => {
+app.delete('/webhooks', (req: express.Request, res: express.Response) => {
   const { url } = req.body
 
   if (!url) {
@@ -72,7 +72,7 @@ async function sendWebhookNotifications(payment: any) {
   return Promise.all(webhookPromises)
 }
 
-app.post('/charges', (req, res) => {
+app.post('/charges', (req: express.Request, res: express.Response) => {
   const { amount, currency, description, paymentMethod } = req.body
 
   if (!amount || !currency || !paymentMethod) {
@@ -105,7 +105,7 @@ app.post('/charges', (req, res) => {
   }, 300)
 })
 
-app.get('/charges/:id', (req, res) => {
+app.get('/charges/:id', (req: express.Request, res: express.Response) => {
   const { id } = req.params
   const payment = payments.get(id)
 
@@ -116,7 +116,7 @@ app.get('/charges/:id', (req, res) => {
   res.status(200).json(payment)
 })
 
-app.post('/charges/:id/update-status', (req, res) => {
+app.post('/charges/:id/update-status', (req: express.Request, res: express.Response) => {
   const { id } = req.params
   const { status } = req.body
   const payment = payments.get(id)
@@ -143,7 +143,7 @@ app.post('/charges/:id/update-status', (req, res) => {
   }, 100)
 })
 
-app.post('/refund/:id', (req, res) => {
+app.post('/refund/:id', (req: express.Request, res: express.Response) => {
   const { id } = req.params
   const { amount } = req.body
   const payment = payments.get(id)
