@@ -44,16 +44,12 @@ export class ProviderTestController {
     }
 
     try {
-      // Primeiro abra o circuit breaker usando o service
       this.circuitBreakerService.openCircuit(provider)
 
-      // Em seguida, publique o status no Kafka por consistência
       this.kafkaProducer.publishProviderStatus(provider, 'unhealthy')
 
-      // Adicionalmente, use o método da factory, que também abre o circuit breaker
       this.providerFactory.markProviderAsUnhealthy(provider)
 
-      // Verificar se o circuito está de fato aberto
       const circuitStatus = this.circuitBreakerService.getStatus()
       const isOpen = !this.circuitBreakerService.isCircuitClosed(provider)
       const isHealthy = this.providerFactory.getProvidersStatus()[provider]?.healthy
