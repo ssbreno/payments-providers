@@ -32,6 +32,48 @@ export class ProviderTestController {
     }
   }
 
+  @Post('force-unhealthy/:provider')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Force a provider to be unhealthy by directly opening its circuit breaker',
+  })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Provider forced to unhealthy state' })
+  forceProviderUnhealthy(@Param('provider') provider: string) {
+    if (provider !== 'provider1' && provider !== 'provider2') {
+      return { success: false, message: 'Invalid provider name. Use provider1 or provider2.' }
+    }
+
+    try {
+      // Primeiro abra o circuit breaker usando o service
+      this.circuitBreakerService.openCircuit(provider)
+
+      // Em seguida, publique o status no Kafka por consistência
+      this.kafkaProducer.publishProviderStatus(provider, 'unhealthy')
+
+      // Adicionalmente, use o método da factory, que também abre o circuit breaker
+      this.providerFactory.markProviderAsUnhealthy(provider)
+
+      // Verificar se o circuito está de fato aberto
+      const circuitStatus = this.circuitBreakerService.getStatus()
+      const isOpen = !this.circuitBreakerService.isCircuitClosed(provider)
+      const isHealthy = this.providerFactory.getProvidersStatus()[provider]?.healthy
+
+      return {
+        success: true,
+        message: `Provider ${provider} was ${isOpen && !isHealthy ? 'successfully' : 'NOT'} marked as unhealthy.`,
+        providerStatus: this.providerFactory.getProvidersStatus(),
+        circuitStatus: circuitStatus,
+        circuitOpen: isOpen,
+        providerHealthy: isHealthy,
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message: `Failed to force provider unhealthy: ${error.message}`,
+      }
+    }
+  }
+
   @Post('fail/:provider')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Simulate a provider failure' })
@@ -124,37 +166,6 @@ export class ProviderTestController {
       return {
         success: false,
         message: `Failed to reset circuit breakers: ${error.message}`,
-      }
-    }
-  }
-
-  @Post('kafka/provider-status/:provider/:status')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Manually publish provider status to Kafka' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Provider status published to Kafka' })
-  async publishProviderStatus(
-    @Param('provider') provider: string,
-    @Param('status') status: 'healthy' | 'unhealthy',
-  ) {
-    if (provider !== 'provider1' && provider !== 'provider2') {
-      return { success: false, message: 'Invalid provider name. Use provider1 or provider2.' }
-    }
-
-    if (status !== 'healthy' && status !== 'unhealthy') {
-      return { success: false, message: 'Invalid status. Use healthy or unhealthy.' }
-    }
-
-    try {
-      await this.kafkaProducer.publishProviderStatus(provider, status)
-
-      return {
-        success: true,
-        message: `Published ${status} status for ${provider} to Kafka.`,
-      }
-    } catch (error) {
-      return {
-        success: false,
-        message: `Failed to publish provider status: ${error.message}`,
       }
     }
   }

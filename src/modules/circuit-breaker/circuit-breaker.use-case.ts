@@ -31,23 +31,45 @@ export class CircuitBreakerUseCase {
   }
 
   async fire<T>(name: string, fn: () => Promise<T>, options: Partial<Options> = {}): Promise<T> {
+    const existingBreaker = this.breakers.get(name)
+
+    if (existingBreaker && !existingBreaker.closed) {
+      const state = existingBreaker.opened
+        ? 'open'
+        : existingBreaker.halfOpen
+          ? 'half-open'
+          : 'unknown'
+      this.logger.warn(`Circuit breaker ${name} is ${state}, rejecting request`)
+      throw new Error(`Service ${name} is unavailable`)
+    }
+
     const circuitOptions: Options = {
       ...DEFAULT_CIRCUIT_BREAKER_OPTIONS,
       ...options,
       name,
     }
 
-    const breaker = new CircuitBreaker(fn, circuitOptions)
-    this.addBreakerListeners(breaker)
-
-    this.breakers.set(name, breaker)
+    const tempBreaker = new CircuitBreaker(fn, circuitOptions)
+    this.addBreakerListeners(tempBreaker)
 
     try {
-      const result = await breaker.fire()
+      const result = await tempBreaker.fire()
       return result
     } catch (error) {
       this.logger.error(`Circuit breaker ${name} error: ${error.message}`, error.stack)
+
+      this.handleCircuitFailure(name)
+
       throw error
+    }
+  }
+
+  private handleCircuitFailure(name: string): void {
+    const breaker = this.getBreaker(name)
+
+    const failures = breaker.status.stats.failures + 1
+    if (failures >= 3) {
+      this.openCircuit(name)
     }
   }
 
@@ -88,10 +110,15 @@ export class CircuitBreakerUseCase {
   }
 
   openCircuit(name: string): void {
-    const breaker = this.breakers.get(name)
-    if (breaker) {
-      breaker.open()
-      this.logger.warn(`Circuit ${name} manually opened`)
+    const breaker = this.getBreaker(name)
+
+    breaker.open()
+    this.logger.warn(`Circuit ${name} manually opened`)
+
+    if (!breaker.opened) {
+      this.logger.error(
+        `Failed to open circuit ${name}. Current state: ${breaker.status ? 'closed:' + breaker.closed + ', opened:' + breaker.opened + ', halfOpen:' + breaker.halfOpen : 'unknown'}`,
+      )
     }
   }
 

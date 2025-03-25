@@ -19,7 +19,7 @@ export class PaymentProviderFactory {
     private readonly circuitBreakerService: CircuitBreakerUseCase,
     private readonly kafkaProducer: KafkaProducerUseCase,
   ) {
-    this.providers = [provider1Service, provider2Service]
+    this.providers = [this.provider1Service, this.provider2Service]
 
     this.providerMap = new Map()
     this.providers.forEach(provider => {
@@ -95,22 +95,22 @@ export class PaymentProviderFactory {
   }
 
   getAllProviders(): IPaymentProviderRepository[] {
-    return [...this.providers]
+    return Array.from(this.providerMap.values())
   }
 
   getHealthyProviders(): IPaymentProviderRepository[] {
-    return this.providers.filter(provider => provider.isHealthy())
+    return Array.from(this.providerMap.values()).filter(provider => provider.isHealthy())
   }
 
   private getUnhealthyProviders(): IPaymentProviderRepository[] {
-    return this.providers.filter(provider => !provider.isHealthy())
+    return Array.from(this.providerMap.values()).filter(provider => !provider.isHealthy())
   }
 
   getProvidersStatus(): Record<string, { healthy: boolean }> {
     const status: Record<string, { healthy: boolean }> = {}
 
-    this.providers.forEach(provider => {
-      status[provider.getName()] = {
+    this.providerMap.forEach((provider, name) => {
+      status[name] = {
         healthy: provider.isHealthy(),
       }
     })
@@ -119,9 +119,9 @@ export class PaymentProviderFactory {
   }
 
   resetAllProviders(): void {
-    this.providers.forEach(provider => {
-      this.circuitBreakerService.reset(provider.getName())
-      this.kafkaProducer.publishProviderStatus(provider.getName(), 'healthy')
+    this.providerMap.forEach((provider, name) => {
+      this.circuitBreakerService.reset(name)
+      this.kafkaProducer.publishProviderStatus(name, 'healthy')
     })
     this.logger.log('All provider circuit breakers have been reset')
   }
@@ -130,5 +130,18 @@ export class PaymentProviderFactory {
     this.circuitBreakerService.reset(providerName)
     this.kafkaProducer.publishProviderStatus(providerName, 'healthy')
     this.logger.log(`Provider ${providerName} circuit breaker has been reset`)
+  }
+
+  markProviderAsUnhealthy(providerName: string): void {
+    this.circuitBreakerService.openCircuit(providerName)
+    this.kafkaProducer.publishProviderStatus(providerName, 'unhealthy')
+    this.logger.warn(`Provider ${providerName} manually marked as unhealthy`)
+  }
+
+  markAllProvidersAsUnhealthy(): void {
+    this.providerMap.forEach((_, name) => {
+      this.markProviderAsUnhealthy(name)
+    })
+    this.logger.warn('All providers manually marked as unhealthy')
   }
 }
